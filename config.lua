@@ -3,7 +3,7 @@ Config = {}
 Config.UseOXinventory = true
 Config.UseOxtarget = true
 Config.UseOxlib = true
-Config.Debug = true
+Config.Debug = false
 
 -- Job Start
 Config.RequiredPolice = 0
