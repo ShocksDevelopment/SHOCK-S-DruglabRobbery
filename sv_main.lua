@@ -119,10 +119,6 @@ local function RollAllowedChance(itemName)
     return roll <= chance
 end
 
---========================================================
--- ox_lib callbacks
---========================================================
-
 lib.callback.register('druglab:server:getPoliceCount', function(source)
     return CountPolice()
 end)
@@ -139,9 +135,6 @@ lib.callback.register('druglab:server:hasRequiredItem', function(source, itemNam
     return false
 end)
 
---========================================================
--- job lifecycle
---========================================================
 
 RegisterNetEvent('druglab:server:jobStarted', function()
     local src = source
@@ -226,13 +219,9 @@ RegisterNetEvent('druglab:server:dispatchAlert', function(coords)
     ))
 
     -- Hook for ps-dispatch / cd_dispatch / custom dispatch
-    -- Example only:
     -- TriggerEvent('yourdispatch:event', {...})
 end)
 
---========================================================
--- loot reward
---========================================================
 
 RegisterNetEvent('druglab:server:giveLoot', function(lootType, amount, index)
     local src = source
@@ -287,10 +276,6 @@ RegisterNetEvent('druglab:server:giveLoot', function(lootType, amount, index)
     Notify(src, ('You received %sx %s.'):format(amount, lootType), 'success')
     DebugPrint(('Gave loot to %s | type=%s | amount=%s | index=%s'):format(src, lootType, amount, index))
 end)
-
---========================================================
--- cleanup
---========================================================
 
 AddEventHandler('playerDropped', function()
     local src = source
