@@ -91,9 +91,6 @@ local function EnsureInteriorReady(coords)
     NewLoadSceneStop()
 end
 
---========================================================
--- Helpers
---========================================================
 local function DebugPrint(msg)
     if Config.Debug then
         print(('[druglab:client] %s'):format(msg))
@@ -234,10 +231,6 @@ local function CleanupJob()
     DebugPrint('Job cleaned up')
 end
 
---========================================================
--- Config: RequiredPolice / Dispatch / Entry Item hooks
--- Client calls server for these; server should validate.
---========================================================
 local function GetPoliceCount()
     local policeCount = 0
 
@@ -269,7 +262,6 @@ local function HasRequiredEntryItem()
         end
     end
 
-    -- fallback if no callback is registered yet
     DebugPrint('No server callback for required item check; defaulting to false')
     return false
 end
@@ -294,9 +286,6 @@ local function SendDispatch()
     DebugPrint('Dispatch alert triggered')
 end
 
---========================================================
--- Config: Job Vehicle
---========================================================
 local function SpawnJobVehicle()
     if currentVehicle and DoesEntityExist(currentVehicle) then
         Notify('Job vehicle already spawned.', 'error')
@@ -337,9 +326,6 @@ local function SpawnJobVehicle()
     DebugPrint(('Spawned job vehicle: %s'):format(Config.JobVehicle))
 end
 
---========================================================
--- Config: SearchAnim / LootItems / LootItemChance / LootItemAmount
---========================================================
 local function RollLootType()
     local totalWeight = 0
 
@@ -412,7 +398,6 @@ local function SearchLoot(index, lootType)
 
     local amount = math.random(Config.LootItemAmount.min, Config.LootItemAmount.max)
 
-    -- Reward should still be validated server-side
     TriggerServerEvent('druglab:server:giveLoot', lootType, amount, index)
 
     Notify(('You found %sx %s.'):format(amount, lootType), 'success')
@@ -426,9 +411,6 @@ local function SearchLoot(index, lootType)
     end
 end
 
---========================================================
--- Config: LootProps / LootLocation
---========================================================
 local function SpawnLootProps()
     ClearLootState()
 
@@ -492,9 +474,6 @@ local function SpawnLootProps()
     end
 end
 
---========================================================
--- Config: Guards
---========================================================
 local function ApplyGuardStats(ped)
     SetPedAccuracy(ped, Config.GuardAccuracy or 45)
     SetPedArmour(ped, Config.GuardArmor or 0)
@@ -585,9 +564,6 @@ local function RespawnGuardsIfNeeded()
     end
 end
 
---========================================================
--- Config: Lab Entry / Exit
---========================================================
 local function EnterLab()
     if insideLab then
         Notify('You are already inside the lab.', 'error')
@@ -660,9 +636,6 @@ local function ExitLab()
     DebugPrint('Player exited lab and completed the job')
 end
 
---========================================================
--- Config: Job Start
---========================================================
 local function StartJob()
     if jobActive then
         Notify('You already have an active robbery.', 'error')
@@ -746,9 +719,6 @@ local function SpawnStartPed()
     DebugPrint('Spawned start ped')
 end
 
---========================================================
--- Zones
---========================================================
 local function CreateZones()
     if not Config.UseOxtarget then
         DebugPrint('ox_target disabled; zones not created')
@@ -815,9 +785,6 @@ local function CreateZones()
     DebugPrint('Created interaction zones')
 end
 
---========================================================
--- Threads
---========================================================
 CreateThread(function()
     Wait(1000)
 
@@ -850,9 +817,6 @@ AddEventHandler('onResourceStop', function(resourceName)
     end
 end)
 
---========================================================
--- Optional external cleanup hooks
---========================================================
 RegisterNetEvent('druglab:client:forceCleanup', function()
     CleanupJob()
 end)
